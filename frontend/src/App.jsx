@@ -8,7 +8,7 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen">
-        <nav className="bg-white shadow-lg">
+        <nav className="bg-[#121212] shadow-lg">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex">
@@ -18,25 +18,25 @@ function App() {
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                   <Link
                     to="/"
-                    className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                    className="border-transparent text-white hover:border-gray-300 hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                   >
                     Dashboard
                   </Link>
                   <Link
                     to="/expenses"
-                    className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                    className="border-transparent text-white hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                   >
                     Expenses
                   </Link>
                   <Link
                     to="/budgets"
-                    className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                    className="border-transparent text-white hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                   >
                     Budgets
                   </Link>
                   <Link
                     to="/reports"
-                    className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                    className="border-transparent text-white hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                   >
                     Reports
                   </Link>
@@ -46,7 +46,7 @@ function App() {
           </div>
         </nav>
 
-        <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 bg-[#121212]">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/expenses" element={<Expenses />} />

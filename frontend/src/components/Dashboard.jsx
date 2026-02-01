@@ -113,19 +113,19 @@ function Dashboard() {
         <div className="flex gap-2">
           <button
             onClick={() => changeMonth(-1)}
-            className="px-4 py-2 bg-white text-purple-600 rounded-lg hover:bg-gray-100 font-medium"
+            className="px-4 py-2 bg-[#1F2933] text-purple-600 rounded-lg hover:bg-gray-100 font-medium"
           >
             ← Prev
           </button>
           <button
             onClick={() => setCurrentDate(new Date())}
-            className="px-4 py-2 bg-white text-purple-600 rounded-lg hover:bg-gray-100 font-medium"
+            className="px-4 py-2 bg-[#1F2933] text-purple-600 rounded-lg hover:bg-gray-100 font-medium"
           >
             Today
           </button>
           <button
             onClick={() => changeMonth(1)}
-            className="px-4 py-2 bg-white text-purple-600 rounded-lg hover:bg-gray-100 font-medium"
+            className="px-4 py-2 bg-[#1F2933] text-purple-600 rounded-lg hover:bg-gray-100 font-medium"
           >
             Next →
           </button>
@@ -133,60 +133,60 @@ function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-gray-500 text-sm font-medium mb-2">Total This Month</h3>
+        <div className="bg-[#1F2933] rounded-lg shadow-lg p-6 border-2 border-[#2D3748]">
+          <h3 className="text-[#f5f5f5b5] text-sm font-medium mb-2">Total This Month</h3>
           <p className="text-3xl font-bold text-purple-600">${totalExpenses.toFixed(2)}</p>
         </div>
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-gray-500 text-sm font-medium mb-2">Today's Expenses</h3>
+        <div className="bg-[#1F2933] rounded-lg shadow-lg p-6 border-2 border-[#2D3748]">
+          <h3 className="text-[#f5f5f5b5] text-sm font-medium mb-2">Today's Expenses</h3>
           <p className="text-3xl font-bold text-blue-600">${todayExpenses.toFixed(2)}</p>
         </div>
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-gray-500 text-sm font-medium mb-2">Total Transactions</h3>
+        <div className="bg-[#1F2933] rounded-lg shadow-lg p-6 border-2 border-[#2D3748]">
+          <h3 className="text-[#f5f5f5b5] text-sm font-medium mb-2">Total Transactions</h3>
           <p className="text-3xl font-bold text-green-600">{expenses.length}</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-xl font-bold mb-4">Monthly Trend</h3>
+        <div className="bg-[#1F2933] rounded-lg shadow-lg p-6 border-2 border-[#2D3748]">
+          <h3 className="text-xl text-[#f5f5f5b5] font-bold mb-4">Monthly Trend</h3>
           {monthlySummary.length > 0 ? (
             <Line data={monthlyData} options={{ responsive: true, maintainAspectRatio: true }} />
           ) : (
-            <p className="text-gray-500 text-center py-8">No data available</p>
+            <p className="text-[#f5f5f5b5] text-center py-8">No data available</p>
           )}
         </div>
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-xl font-bold mb-4">Expenses by Category</h3>
+        <div className="bg-[#1F2933] rounded-lg shadow-lg p-6 border-2 border-[#2D3748]">
+          <h3 className="text-xl text-[#f5f5f5b5] font-bold mb-4">Expenses by Category</h3>
           {categorySummary.length > 0 ? (
             <Doughnut data={categoryData} options={{ responsive: true, maintainAspectRatio: true }} />
           ) : (
-            <p className="text-gray-500 text-center py-8">No data available</p>
+            <p className="text-[#f5f5f5b5] text-center py-8">No data available</p>
           )}
         </div>
       </div>
 
-      <div className="mt-6 bg-white rounded-lg shadow-lg p-6">
-        <h3 className="text-xl font-bold mb-4">Recent Expenses</h3>
+      <div className="mt-6 bg-[#1F2933] rounded-lg shadow-lg p-6 border-2 border-[#2D3748]">
+        <h3 className="text-xl text-[#f5f5f5b5] font-bold mb-4">Recent Expenses</h3>
         {expenses.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#f5f5f5b5] uppercase">Date</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#f5f5f5b5] uppercase">Category</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#f5f5f5b5] uppercase">Description</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#f5f5f5b5] uppercase">Amount</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-[#1F2933] divide-y divide-gray-200">
                 {expenses.slice(0, 5).map((expense) => (
                   <tr key={expense.id}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {format(new Date(expense.date), 'MMM dd, yyyy')}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{expense.category}</td>
-                    <td className="px-6 py-4 text-sm text-gray-500">{expense.description || '-'}</td>
+                    <td className="px-6 py-4 text-sm text-[#f5f5f5b5]">{expense.description || '-'}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       ${expense.amount.toFixed(2)}
                     </td>
@@ -196,7 +196,7 @@ function Dashboard() {
             </table>
           </div>
         ) : (
-          <p className="text-gray-500 text-center py-8">No expenses recorded yet</p>
+          <p className="text-[#f5f5f5b5] text-center py-8">No expenses recorded yet</p>
         )}
       </div>
     </div>
