@@ -8,7 +8,7 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen">
-        <nav className="bg-gray-950 bg-[#212121] shadow-lg">
+        <nav className="bg-[#121212] shadow-lg">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex">
@@ -46,7 +46,7 @@ function App() {
           </div>
         </nav>
 
-        <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 bg-[#212121]">
+        <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 bg-[#121212]">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/expenses" element={<Expenses />} />
