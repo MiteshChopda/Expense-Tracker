@@ -166,28 +166,28 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="mt-6 bg-[#1F2933] rounded-lg shadow-lg p-6 border-2 border-[#2D3748]">
+      <div className="mt-6 bg-[#1F2933] shadow-lg p-6 border-[#2D3748]">
         <h3 className="text-xl text-[#f5f5f5b5] font-bold mb-4">Recent Expenses</h3>
         {expenses.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+          <div className="overflow-x-auto rounded-lg">
+            <table className="min-w-full divide-y divide-gray-200 rounded-lg">
+              <thead className="bg-gray-500 rounded-lg text-white rounded-lg">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-[#f5f5f5b5] uppercase">Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-[#f5f5f5b5] uppercase">Category</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-[#f5f5f5b5] uppercase">Description</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-[#f5f5f5b5] uppercase">Amount</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase">Date</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase">Category</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase">Description</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase">Amount</th>
                 </tr>
               </thead>
-              <tbody className="bg-[#1F2933] divide-y divide-gray-200">
+              <tbody className="bg-[#1F2933] text-white divide-y divide-gray-200">
                 {expenses.slice(0, 5).map((expense) => (
                   <tr key={expense.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm ">
                       {format(new Date(expense.date), 'MMM dd, yyyy')}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{expense.category}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm ">{expense.category}</td>
                     <td className="px-6 py-4 text-sm text-[#f5f5f5b5]">{expense.description || '-'}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium ">
                       ${expense.amount.toFixed(2)}
                     </td>
                   </tr>

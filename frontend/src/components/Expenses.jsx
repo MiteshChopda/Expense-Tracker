@@ -147,14 +147,14 @@ function Expenses() {
       </div>
 
       {showForm && (
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <h3 className="text-xl font-bold mb-4">
+        <div className="bg-[#1F2933]  rounded-lg shadow-lg p-6 mb-6">
+          <h3 className="text-xl font-bold mb-4 text-purple-500">
             {editingExpense ? 'Edit Expense' : 'Add New Expense'}
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Amount</label>
+                <label className="block text-sm font-medium text-white mb-1">Amount</label>
                 <input
                   type="number"
                   step="0.01"
@@ -165,7 +165,7 @@ function Expenses() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                <label className="block text-sm font-medium text-white mb-1">Date</label>
                 <input
                   type="date"
                   required
@@ -176,7 +176,7 @@ function Expenses() {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <label className="block text-sm font-medium text-white mb-1">Category</label>
               <select
                 required
                 value={formData.category}
@@ -192,7 +192,7 @@ function Expenses() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <label className="block text-sm font-medium text-white mb-1">Description</label>
               <input
                 type="text"
                 value={formData.description}
@@ -211,7 +211,7 @@ function Expenses() {
               <button
                 type="button"
                 onClick={handleCancel}
-                className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 font-medium"
+                className="px-6 py-2 bg-white text-purple-600 rounded-lg hover:bg-gray-400 font-medium"
               >
                 Cancel
               </button>
@@ -220,9 +220,9 @@ function Expenses() {
         </div>
       )}
 
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className=" rounded-lg shadow-lg overflow-hidden">
         {expenses.length > 0 ? (
-          <div className="overflow-x-auto">
+          <div className=" bg-[#1F2933] overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -243,10 +243,10 @@ function Expenses() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-[#1F2933] divide-y divide-gray-200">
                 {expenses.map((expense) => (
-                  <tr key={expense.id || expense._id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <tr key={expense.id || expense._id} className="hover:bg-gray-700">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-[#f5f5f5b5]">
                       {format(new Date(expense.date), 'MMM dd, yyyy')}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -255,7 +255,7 @@ function Expenses() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">{expense.description || '-'}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#f5f5f5b5]">
                       ${expense.amount.toFixed(2)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
