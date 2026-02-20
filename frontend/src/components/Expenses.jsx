@@ -77,7 +77,7 @@ function Expenses() {
     } else {
       dateValue = format(new Date(dateValue), 'yyyy-MM-dd');
     }
-    
+
     setFormData({
       amount: expense.amount.toString(),
       category: expense.category,
@@ -92,19 +92,19 @@ function Expenses() {
       e.preventDefault();
       e.stopPropagation();
     }
-    
+
     // Use the ID from the expense object (handles both _id and id)
     const expenseId = id || (e?.currentTarget?.dataset?.id);
     if (!expenseId) {
       alert('Error: Expense ID not found');
       return;
     }
-    
+
     const confirmed = window.confirm('Are you sure you want to delete this expense? This action cannot be undone.');
     if (!confirmed) {
       return;
     }
-    
+
     try {
       await expensesAPI.delete(expenseId);
       loadExpenses();
@@ -170,6 +170,7 @@ function Expenses() {
                   type="date"
                   required
                   value={formData.date}
+                  max={format(new Date(), 'yyyy-MM-dd')} // Sets maximum selectable date to today
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />

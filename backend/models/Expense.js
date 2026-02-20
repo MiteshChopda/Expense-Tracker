@@ -19,11 +19,18 @@ const expenseSchema = new mongoose.Schema({
   date: {
     type: Date,
     required: [true, 'Date is required'],
+    validate: {
+      validator: function (value) {
+        // Returns false if the date is in the future
+        return value <= new Date();
+      },
+      message: 'Expense date cannot be in the future'
+    }
   },
 }, {
   timestamps: true,
   toJSON: {
-    transform: function(doc, ret) {
+    transform: function (doc, ret) {
       ret.id = ret._id;
       delete ret._id;
       delete ret.__v;
