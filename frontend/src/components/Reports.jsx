@@ -48,16 +48,13 @@ function Reports() {
     if (!report) return;
 
     const doc = new jsPDF();
-    
-    // Title
+
     doc.setFontSize(18);
     doc.text('Monthly Expense Report', 14, 20);
-    
-    // Month and Year
+
     doc.setFontSize(12);
     doc.text(`${format(currentDate, 'MMMM yyyy')}`, 14, 30);
-    
-    // Summary
+
     doc.setFontSize(14);
     doc.text('Summary', 14, 45);
     doc.setFontSize(10);
@@ -65,17 +62,16 @@ function Reports() {
     doc.text(`Budget Total: $${report.budgetTotal.toFixed(2)}`, 14, 60);
     doc.text(`Remaining: $${report.remaining.toFixed(2)}`, 14, 65);
     doc.text(`Number of Transactions: ${report.expenseCount}`, 14, 70);
-    
-    // Category Summary Table
+
     doc.setFontSize(14);
     doc.text('Expenses by Category', 14, 85);
-    
+
     const categoryData = report.categorySummary.map(cat => [
       cat.category,
       `$${cat.total.toFixed(2)}`,
       cat.count.toString()
     ]);
-    
+
     doc.autoTable({
       startY: 90,
       head: [['Category', 'Total', 'Count']],
@@ -83,19 +79,18 @@ function Reports() {
       theme: 'striped',
       headStyles: { fillColor: [139, 92, 246] },
     });
-    
-    // Expenses Table
+
     let finalY = doc.lastAutoTable.finalY + 10;
     doc.setFontSize(14);
     doc.text('All Expenses', 14, finalY);
-    
+
     const expenseData = report.expenses.map(exp => [
       format(new Date(exp.date), 'MMM dd, yyyy'),
       exp.category,
       exp.description || '-',
       `$${exp.amount.toFixed(2)}`
     ]);
-    
+
     doc.autoTable({
       startY: finalY + 5,
       head: [['Date', 'Category', 'Description', 'Amount']],
@@ -103,9 +98,28 @@ function Reports() {
       theme: 'striped',
       headStyles: { fillColor: [139, 92, 246] },
     });
-    
-    // Save PDF
+
     doc.save(`expense-report-${format(currentDate, 'yyyy-MM')}.pdf`);
+  };
+
+  const barOptions = {
+    responsive: true,
+    maintainAspectRatio: true,
+    scales: {
+      y: {
+        ticks: { color: '#f5f5f5b5' },
+        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+      },
+      x: {
+        ticks: { color: '#f5f5f5b5' },
+        grid: { display: false }
+      }
+    },
+    plugins: {
+      legend: {
+        labels: { color: '#f5f5f5b5' }
+      }
+    }
   };
 
   if (loading) {
@@ -124,7 +138,7 @@ function Reports() {
     );
   }
 
-  const categoryData = {
+  const categoryChartData = {
     labels: report.categorySummary.map(item => item.category),
     datasets: [
       {
@@ -136,34 +150,34 @@ function Reports() {
   };
 
   return (
-    <div className="px-4 py-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="px-4 py-6 bg-[#121212]">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <div>
           <h2 className="text-3xl font-bold text-white">Monthly Report</h2>
-          <p className="text-white mt-2">{format(currentDate, 'MMMM yyyy')}</p>
+          <p className="text-[#f5f5f5b5] mt-2">{format(currentDate, 'MMMM yyyy')}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={() => changeMonth(-1)}
-            className="px-4 py-2 bg-white text-purple-600 rounded-lg hover:bg-gray-100 font-medium"
+            className="px-4 py-2 bg-[#1F2933] text-purple-500 border border-[#2D3748] rounded-lg hover:bg-gray-700 font-medium"
           >
             ← Prev
           </button>
           <button
             onClick={() => setCurrentDate(new Date())}
-            className="px-4 py-2 bg-white text-purple-600 rounded-lg hover:bg-gray-100 font-medium"
+            className="px-4 py-2 bg-[#1F2933] text-purple-500 border border-[#2D3748] rounded-lg hover:bg-gray-700 font-medium"
           >
             Current
           </button>
           <button
             onClick={() => changeMonth(1)}
-            className="px-4 py-2 bg-white text-purple-600 rounded-lg hover:bg-gray-100 font-medium"
+            className="px-4 py-2 bg-[#1F2933] text-purple-500 border border-[#2D3748] rounded-lg hover:bg-gray-700 font-medium"
           >
             Next →
           </button>
           <button
             onClick={exportToPDF}
-            className="px-6 py-3 bg-white text-purple-600 rounded-lg hover:bg-gray-100 font-medium shadow-lg ml-2"
+            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium shadow-lg ml-2"
           >
             📄 Export PDF
           </button>
@@ -171,63 +185,57 @@ function Reports() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-gray-500 text-sm font-medium mb-2">Total Expenses</h3>
+        <div className="bg-[#1F2933] rounded-lg shadow-lg p-6 border border-[#2D3748]">
+          <h3 className="text-[#f5f5f5b5] text-sm font-medium mb-2">Total Expenses</h3>
           <p className="text-3xl font-bold text-purple-600">${report.totalExpenses.toFixed(2)}</p>
         </div>
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-gray-500 text-sm font-medium mb-2">Budget Total</h3>
-          <p className="text-3xl font-bold text-blue-600">${report.budgetTotal.toFixed(2)}</p>
+        <div className="bg-[#1F2933] rounded-lg shadow-lg p-6 border border-[#2D3748]">
+          <h3 className="text-[#f5f5f5b5] text-sm font-medium mb-2">Budget Total</h3>
+          <p className="text-3xl font-bold text-blue-500">${report.budgetTotal.toFixed(2)}</p>
         </div>
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-gray-500 text-sm font-medium mb-2">Remaining</h3>
-          <p className={`text-3xl font-bold ${report.remaining >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+        <div className="bg-[#1F2933] rounded-lg shadow-lg p-6 border border-[#2D3748]">
+          <h3 className="text-[#f5f5f5b5] text-sm font-medium mb-2">Remaining</h3>
+          <p className={`text-3xl font-bold ${report.remaining >= 0 ? 'text-green-500' : 'text-red-500'}`}>
             ${report.remaining.toFixed(2)}
           </p>
         </div>
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-gray-500 text-sm font-medium mb-2">Transactions</h3>
-          <p className="text-3xl font-bold text-indigo-600">{report.expenseCount}</p>
+        <div className="bg-[#1F2933] rounded-lg shadow-lg p-6 border border-[#2D3748]">
+          <h3 className="text-[#f5f5f5b5] text-sm font-medium mb-2">Transactions</h3>
+          <p className="text-3xl font-bold text-indigo-500">{report.expenseCount}</p>
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-        <h3 className="text-xl font-bold mb-4">Expenses by Category</h3>
+      <div className="bg-[#1F2933] rounded-lg shadow-lg p-6 mb-6 border border-[#2D3748]">
+        <h3 className="text-xl font-bold mb-4 text-white">Expenses by Category</h3>
         {report.categorySummary.length > 0 ? (
-          <Bar data={categoryData} options={{ responsive: true, maintainAspectRatio: true }} />
+          <Bar data={categoryChartData} options={barOptions} />
         ) : (
-          <p className="text-gray-500 text-center py-8">No data available</p>
+          <p className="text-[#f5f5f5b5] text-center py-8">No data available</p>
         )}
       </div>
 
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-        <h3 className="text-xl font-bold mb-4">Category Breakdown</h3>
+      <div className="bg-[#1F2933] rounded-lg shadow-lg p-6 mb-6 border border-[#2D3748]">
+        <h3 className="text-xl font-bold mb-4 text-white">Category Breakdown</h3>
         {report.categorySummary.length > 0 ? (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-[#2D3748]">
+              <thead className="bg-[#121212]">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Count</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Percentage</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#f5f5f5b5] uppercase">Category</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#f5f5f5b5] uppercase">Total</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#f5f5f5b5] uppercase">Count</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#f5f5f5b5] uppercase">Percentage</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-[#1F2933] divide-y divide-[#2D3748]">
                 {report.categorySummary.map((item) => {
                   const percentage = (item.total / report.totalExpenses) * 100;
                   return (
-                    <tr key={item.category}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {item.category}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        ${item.total.toFixed(2)}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.count}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {percentage.toFixed(1)}%
-                      </td>
+                    <tr key={item.category} className="hover:bg-gray-800">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{item.category}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white">${item.total.toFixed(2)}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-[#f5f5f5b5]">{item.count}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-[#f5f5f5b5]">{percentage.toFixed(1)}%</td>
                     </tr>
                   );
                 })}
@@ -235,36 +243,36 @@ function Reports() {
             </table>
           </div>
         ) : (
-          <p className="text-gray-500 text-center py-8">No expenses recorded for this month</p>
+          <p className="text-[#f5f5f5b5] text-center py-8">No expenses recorded for this month</p>
         )}
       </div>
 
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h3 className="text-xl font-bold mb-4">All Expenses</h3>
+      <div className="bg-[#1F2933] rounded-lg shadow-lg p-6 border border-[#2D3748]">
+        <h3 className="text-xl font-bold mb-4 text-white">All Expenses</h3>
         {report.expenses.length > 0 ? (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-[#2D3748]">
+              <thead className="bg-[#121212]">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#f5f5f5b5] uppercase">Date</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#f5f5f5b5] uppercase">Category</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#f5f5f5b5] uppercase">Description</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#f5f5f5b5] uppercase">Amount</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-[#1F2933] divide-y divide-[#2D3748]">
                 {report.expenses.map((expense) => (
-                  <tr key={expense.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <tr key={expense.id} className="hover:bg-gray-800">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                       {format(new Date(expense.date), 'MMM dd, yyyy')}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      <span className="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <span className="px-2 py-1 text-xs font-semibold rounded-full bg-purple-900 text-purple-200">
                         {expense.category}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">{expense.description || '-'}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td className="px-6 py-4 text-sm text-[#f5f5f5b5]">{expense.description || '-'}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
                       ${expense.amount.toFixed(2)}
                     </td>
                   </tr>
@@ -273,7 +281,7 @@ function Reports() {
             </table>
           </div>
         ) : (
-          <p className="text-gray-500 text-center py-8">No expenses recorded for this month</p>
+          <p className="text-[#f5f5f5b5] text-center py-8">No expenses recorded for this month</p>
         )}
       </div>
     </div>

@@ -104,6 +104,25 @@ function Dashboard() {
     );
   }
 
+  const monthlyOptions = {
+    responsive: true,
+    maintainAspectRatio: true,
+    scales: {
+      y: {
+        ticks: { color: '#f5f5f5b5' },
+        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+      },
+      x: {
+        ticks: { color: '#f5f5f5b5' },
+        grid: { display: false }
+      }
+    },
+    plugins: {
+      legend: {
+        labels: { color: '#f5f5f5b5' }
+      }
+    }
+  };
   return (
     <div className="px-4 py-6">
       <div className="mb-6 flex justify-between items-center">
@@ -151,7 +170,7 @@ function Dashboard() {
         <div className="bg-[#1F2933] rounded-lg shadow-lg p-6 border-2 border-[#2D3748]">
           <h3 className="text-xl text-[#f5f5f5b5] font-bold mb-4">Monthly Trend</h3>
           {monthlySummary.length > 0 ? (
-            <Line data={monthlyData} options={{ responsive: true, maintainAspectRatio: true }} />
+            <Line data={monthlyData} options={monthlyOptions} />
           ) : (
             <p className="text-[#f5f5f5b5] text-center py-8">No data available</p>
           )}

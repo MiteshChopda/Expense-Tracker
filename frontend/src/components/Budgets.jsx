@@ -77,26 +77,22 @@ function Budgets() {
       e.preventDefault();
       e.stopPropagation();
     }
-    
-    // Use the ID from the item object (handles both _id and id)
+
     const budgetId = id || (e?.currentTarget?.dataset?.id);
     if (!budgetId) {
       alert('Error: Budget ID not found');
       return;
     }
-    
-    const confirmed = window.confirm('Are you sure you want to delete this budget? This action cannot be undone.');
-    if (!confirmed) {
-      return;
-    }
-    
+
+    const confirmed = window.confirm('Are you sure you want to delete this budget limit?');
+    if (!confirmed) return;
+
     try {
       await budgetsAPI.delete(budgetId);
       loadBudgets();
     } catch (error) {
       console.error('Error deleting budget:', error);
-      const errorMessage = error?.error || error?.message || 'Failed to delete budget';
-      alert(`Error: ${errorMessage}`);
+      alert('Failed to delete budget');
     }
   };
 
@@ -107,40 +103,40 @@ function Budgets() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="text-xl text-white">Loading...</div>
+        <div className="text-xl text-white font-medium">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="px-4 py-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="px-4 py-6 bg-[#121212] min-h-screen">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <div>
           <h2 className="text-3xl font-bold text-white">Budget Planning</h2>
-          <p className="text-white mt-2">{format(currentDate, 'MMMM yyyy')}</p>
+          <p className="text-[#f5f5f5b5] mt-2">{format(currentDate, 'MMMM yyyy')}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={() => changeMonth(-1)}
-            className="px-4 py-2 bg-white text-purple-600 rounded-lg hover:bg-gray-100 font-medium"
+            className="px-4 py-2 bg-[#1F2933] text-purple-500 border border-[#2D3748] rounded-lg hover:bg-gray-700 font-medium transition-colors"
           >
             ← Prev
           </button>
           <button
             onClick={() => setCurrentDate(new Date())}
-            className="px-4 py-2 bg-white text-purple-600 rounded-lg hover:bg-gray-100 font-medium"
+            className="px-4 py-2 bg-[#1F2933] text-purple-500 border border-[#2D3748] rounded-lg hover:bg-gray-700 font-medium transition-colors"
           >
             Current
           </button>
           <button
             onClick={() => changeMonth(1)}
-            className="px-4 py-2 bg-white text-purple-600 rounded-lg hover:bg-gray-100 font-medium"
+            className="px-4 py-2 bg-[#1F2933] text-purple-500 border border-[#2D3748] rounded-lg hover:bg-gray-700 font-medium transition-colors"
           >
             Next →
           </button>
           <button
             onClick={() => setShowForm(true)}
-            className="px-6 py-3 bg-white text-purple-600 rounded-lg hover:bg-gray-100 font-medium shadow-lg ml-2"
+            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium shadow-lg ml-2 transition-colors"
           >
             + Add Budget
           </button>
@@ -148,39 +144,38 @@ function Budgets() {
       </div>
 
       {showForm && (
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <h3 className="text-xl font-bold mb-4">Add Budget</h3>
+        <div className="bg-[#1F2933] rounded-lg shadow-xl p-6 mb-6 border border-[#2D3748]">
+          <h3 className="text-xl font-bold mb-6 text-purple-500">Set Category Budget</h3>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                <label className="block text-sm font-medium text-[#f5f5f5b5] mb-2">Category</label>
                 <select
                   required
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-2 bg-[#121212] border border-[#2D3748] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                 >
-                  <option value="">Select a category</option>
+                  <option value="" className="bg-[#1F2933]">Select category</option>
                   {categories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
+                    <option key={cat} value={cat} className="bg-[#1F2933]">{cat}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Amount</label>
+                <label className="block text-sm font-medium text-[#f5f5f5b5] mb-2">Budget Amount</label>
                 <input
                   type="number"
                   step="0.01"
                   required
                   value={formData.amount}
                   onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-2 bg-[#121212] border border-[#2D3748] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                  placeholder="0.00"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Month/Year</label>
+                <label className="block text-sm font-medium text-[#f5f5f5b5] mb-2">Month & Year</label>
                 <div className="flex gap-2">
                   <input
                     type="number"
@@ -189,7 +184,7 @@ function Budgets() {
                     required
                     value={formData.month}
                     onChange={(e) => setFormData({ ...formData, month: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-1/2 px-4 py-2 bg-[#121212] border border-[#2D3748] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                     placeholder="MM"
                   />
                   <input
@@ -199,31 +194,23 @@ function Budgets() {
                     required
                     value={formData.year}
                     onChange={(e) => setFormData({ ...formData, year: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-1/2 px-4 py-2 bg-[#121212] border border-[#2D3748] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                     placeholder="YYYY"
                   />
                 </div>
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-3 pt-2">
               <button
                 type="submit"
-                className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium"
+                className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors"
               >
-                Add Budget
+                Set Budget
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setShowForm(false);
-                  setFormData({
-                    category: '',
-                    amount: '',
-                    month: format(new Date(), 'MM'),
-                    year: format(new Date(), 'yyyy'),
-                  });
-                }}
-                className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 font-medium"
+                onClick={() => setShowForm(false)}
+                className="px-6 py-2 bg-[#2D3748] text-white rounded-lg hover:bg-gray-600 font-medium transition-colors"
               >
                 Cancel
               </button>
@@ -232,53 +219,54 @@ function Budgets() {
         </div>
       )}
 
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className="bg-[#1F2933] rounded-lg shadow-lg overflow-hidden border border-[#2D3748]">
         {comparison.length > 0 ? (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-[#2D3748]">
+              <thead className="bg-[#121212]">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Budget</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Spent</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Remaining</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Progress</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#f5f5f5b5] uppercase tracking-wider">Category</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#f5f5f5b5] uppercase tracking-wider">Budget</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#f5f5f5b5] uppercase tracking-wider">Spent</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#f5f5f5b5] uppercase tracking-wider">Remaining</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#f5f5f5b5] uppercase tracking-wider">Progress</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#f5f5f5b5] uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="divide-y divide-[#2D3748]">
                 {comparison.map((item) => {
                   const percentage = Math.min(item.percentage, 100);
                   const isOverBudget = item.spent > item.amount;
                   return (
-                    <tr key={item.id || item._id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <tr key={item.id || item._id} className="hover:bg-gray-800 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
                         {item.category}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white font-semibold">
                         ${item.amount.toFixed(2)}
                       </td>
-                      <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${isOverBudget ? 'text-red-600' : 'text-gray-900'}`}>
+                      <td className={`px-6 py-4 whitespace-nowrap text-sm font-bold ${isOverBudget ? 'text-red-500' : 'text-white'}`}>
                         ${item.spent.toFixed(2)}
                       </td>
-                      <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${item.remaining < 0 ? 'text-red-600' : 'text-green-600'}`}>
+                      <td className={`px-6 py-4 whitespace-nowrap text-sm font-bold ${item.remaining < 0 ? 'text-red-500' : 'text-green-500'}`}>
                         ${item.remaining.toFixed(2)}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <td className="px-6 py-4 whitespace-nowrap min-w-[150px]">
+                        <div className="w-full bg-[#121212] rounded-full h-2.5 mb-1">
                           <div
-                            className={`h-2.5 rounded-full ${isOverBudget ? 'bg-red-500' : percentage > 80 ? 'bg-yellow-500' : 'bg-green-500'}`}
-                            style={{ width: `${Math.min(percentage, 100)}%` }}
+                            className={`h-2.5 rounded-full transition-all duration-500 ${isOverBudget ? 'bg-red-500' :
+                              percentage > 80 ? 'bg-yellow-500' : 'bg-green-500'
+                              }`}
+                            style={{ width: `${percentage}%` }}
                           ></div>
                         </div>
-                        <span className="text-xs text-gray-500 mt-1">{percentage.toFixed(1)}%</span>
+                        <span className="text-xs text-[#f5f5f5b5]">{item.percentage.toFixed(1)}% used</span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <button
                           onClick={(e) => handleDelete(item.id || item._id, e)}
-                          className="text-red-600 hover:text-red-900 font-medium"
+                          className="text-red-400 hover:text-red-300 font-medium transition-colors"
                           type="button"
-                          data-id={item.id || item._id}
                         >
                           Delete
                         </button>
@@ -290,11 +278,11 @@ function Budgets() {
             </table>
           </div>
         ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">No budgets set for this month</p>
+          <div className="text-center py-16">
+            <p className="text-[#f5f5f5b5] text-lg">No budget goals set for this month.</p>
             <button
               onClick={() => setShowForm(true)}
-              className="mt-4 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium"
+              className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors"
             >
               Create Your First Budget
             </button>

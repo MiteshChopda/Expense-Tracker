@@ -68,7 +68,6 @@ function Expenses() {
 
   const handleEdit = (expense) => {
     setEditingExpense(expense);
-    // Handle date format - MongoDB returns ISO string or Date object
     let dateValue = expense.date;
     if (dateValue instanceof Date) {
       dateValue = format(dateValue, 'yyyy-MM-dd');
@@ -93,7 +92,6 @@ function Expenses() {
       e.stopPropagation();
     }
 
-    // Use the ID from the expense object (handles both _id and id)
     const expenseId = id || (e?.currentTarget?.dataset?.id);
     if (!expenseId) {
       alert('Error: Expense ID not found');
@@ -129,90 +127,91 @@ function Expenses() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="text-xl text-white">Loading...</div>
+        <div className="text-xl text-white font-medium">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="px-4 py-6">
+    <div className="px-4 py-6 bg-[#121212] min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-white">Expenses</h2>
         <button
           onClick={() => setShowForm(true)}
-          className="px-6 py-3 bg-white text-purple-600 rounded-lg hover:bg-gray-100 font-medium shadow-lg"
+          className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium shadow-lg transition-colors"
         >
           + Add Expense
         </button>
       </div>
 
       {showForm && (
-        <div className="bg-[#1F2933]  rounded-lg shadow-lg p-6 mb-6">
-          <h3 className="text-xl font-bold mb-4 text-purple-500">
+        <div className="bg-[#1F2933] rounded-lg shadow-xl p-6 mb-6 border border-[#2D3748]">
+          <h3 className="text-xl font-bold mb-6 text-purple-500">
             {editingExpense ? 'Edit Expense' : 'Add New Expense'}
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-white mb-1">Amount</label>
+                <label className="block text-sm font-medium text-[#f5f5f5b5] mb-2">Amount</label>
                 <input
                   type="number"
                   step="0.01"
                   required
                   value={formData.amount}
                   onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-2 bg-[#121212] border border-[#2D3748] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                  placeholder="0.00"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-white mb-1">Date</label>
+                <label className="block text-sm font-medium text-[#f5f5f5b5] mb-2">Date</label>
                 <input
                   type="date"
                   required
                   value={formData.date}
-                  max={format(new Date(), 'yyyy-MM-dd')} // Sets maximum selectable date to today
+                  max={format(new Date(), 'yyyy-MM-dd')}
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-2 bg-[#121212] border border-[#2D3748] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-white mb-1">Category</label>
+              <label className="block text-sm font-medium text-[#f5f5f5b5] mb-2">Category</label>
               <select
                 required
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-4 py-2 bg-[#121212] border border-[#2D3748] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
               >
-                <option value="">Select a category</option>
+                <option value="" className="bg-[#1F2933]">Select a category</option>
                 {categories.map((cat) => (
-                  <option key={cat} value={cat}>
+                  <option key={cat} value={cat} className="bg-[#1F2933]">
                     {cat}
                   </option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-white mb-1">Description</label>
+              <label className="block text-sm font-medium text-[#f5f5f5b5] mb-2">Description</label>
               <input
                 type="text"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="Optional description"
+                className="w-full px-4 py-2 bg-[#121212] border border-[#2D3748] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                placeholder="What was this for?"
               />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-3 pt-2">
               <button
                 type="submit"
-                className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium"
+                className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors"
               >
                 {editingExpense ? 'Update' : 'Add'} Expense
               </button>
               <button
                 type="button"
                 onClick={handleCancel}
-                className="px-6 py-2 bg-white text-purple-600 rounded-lg hover:bg-gray-400 font-medium"
+                className="px-6 py-2 bg-[#2D3748] text-white rounded-lg hover:bg-gray-600 font-medium transition-colors"
               >
                 Cancel
               </button>
@@ -221,56 +220,47 @@ function Expenses() {
         </div>
       )}
 
-      <div className=" rounded-lg shadow-lg overflow-hidden">
+      <div className="bg-[#1F2933] rounded-lg shadow-lg overflow-hidden border border-[#2D3748]">
         {expenses.length > 0 ? (
-          <div className=" bg-[#1F2933] overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-[#2D3748]">
+              <thead className="bg-[#121212]">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Date
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Category
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Description
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Amount
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#f5f5f5b5] uppercase tracking-wider">Date</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#f5f5f5b5] uppercase tracking-wider">Category</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#f5f5f5b5] uppercase tracking-wider">Description</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#f5f5f5b5] uppercase tracking-wider">Amount</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#f5f5f5b5] uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
-              <tbody className="bg-[#1F2933] divide-y divide-gray-200">
+              <tbody className="divide-y divide-[#2D3748]">
                 {expenses.map((expense) => (
-                  <tr key={expense.id || expense._id} className="hover:bg-gray-700">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-[#f5f5f5b5]">
+                  <tr key={expense.id || expense._id} className="hover:bg-gray-800 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                       {format(new Date(expense.date), 'MMM dd, yyyy')}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      <span className="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <span className="px-3 py-1 text-xs font-semibold rounded-full bg-purple-900 text-purple-200">
                         {expense.category}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">{expense.description || '-'}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#f5f5f5b5]">
+                    <td className="px-6 py-4 text-sm text-[#f5f5f5b5] max-w-xs truncate">
+                      {expense.description || '-'}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-white">
                       ${expense.amount.toFixed(2)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <button
                         onClick={() => handleEdit(expense)}
-                        className="text-indigo-600 hover:text-indigo-900 mr-4"
+                        className="text-indigo-400 hover:text-indigo-300 mr-4 transition-colors"
                       >
                         Edit
                       </button>
                       <button
                         onClick={(e) => handleDelete(expense.id || expense._id, e)}
-                        className="text-red-600 hover:text-red-900 font-medium"
+                        className="text-red-400 hover:text-red-300 transition-colors"
                         type="button"
-                        data-id={expense.id || expense._id}
                       >
                         Delete
                       </button>
@@ -281,11 +271,11 @@ function Expenses() {
             </table>
           </div>
         ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">No expenses recorded yet</p>
+          <div className="text-center py-16">
+            <p className="text-[#f5f5f5b5] text-lg">No expenses recorded yet.</p>
             <button
               onClick={() => setShowForm(true)}
-              className="mt-4 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium"
+              className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors"
             >
               Add Your First Expense
             </button>

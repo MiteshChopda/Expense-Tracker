@@ -53,7 +53,7 @@ app.get('/api/expenses/:id', async (req, res) => {
 app.post('/api/expenses', async (req, res) => {
   try {
     const { amount, category, description, date } = req.body;
-    
+
     if (!amount || !category || !date) {
       return res.status(400).json({ error: 'Missing required fields: amount, category, and date are required' });
     }
@@ -80,7 +80,7 @@ app.post('/api/expenses', async (req, res) => {
 app.put('/api/expenses/:id', async (req, res) => {
   try {
     const { amount, category, description, date } = req.body;
-    
+
     const expense = await Expense.findByIdAndUpdate(
       req.params.id,
       {
@@ -106,7 +106,7 @@ app.put('/api/expenses/:id', async (req, res) => {
 app.delete('/api/expenses/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     // Validate MongoDB ObjectId format
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: 'Invalid expense ID format' });
@@ -192,7 +192,8 @@ app.get('/api/expenses/summary/monthly', async (req, res) => {
           count: 1,
         },
       },
-      { $sort: { month: -1 } },
+      // CHANGE THIS: From -1 (descending) to 1 (ascending)
+      { $sort: { month: 1 } },
       { $limit: 12 },
     ]);
 
@@ -226,7 +227,7 @@ app.get('/api/budgets', async (req, res) => {
 app.post('/api/budgets', async (req, res) => {
   try {
     const { category, amount, month, year } = req.body;
-    
+
     if (!category || !amount || !month || !year) {
       return res.status(400).json({ error: 'Missing required fields: category, amount, month, and year are required' });
     }
@@ -262,7 +263,7 @@ app.post('/api/budgets', async (req, res) => {
 app.delete('/api/budgets/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     // Validate MongoDB ObjectId format
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: 'Invalid budget ID format' });
@@ -285,7 +286,7 @@ app.delete('/api/budgets/:id', async (req, res) => {
 app.get('/api/budgets/comparison', async (req, res) => {
   try {
     const { month, year } = req.query;
-    
+
     if (!month || !year) {
       return res.status(400).json({ error: 'Month and year are required' });
     }
@@ -337,7 +338,7 @@ app.get('/api/budgets/comparison', async (req, res) => {
 app.get('/api/reports/monthly', async (req, res) => {
   try {
     const { month, year } = req.query;
-    
+
     if (!month || !year) {
       return res.status(400).json({ error: 'Month and year are required' });
     }
@@ -400,8 +401,8 @@ app.get('/api/reports/monthly', async (req, res) => {
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'ok', 
+  res.json({
+    status: 'ok',
     database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
     timestamp: new Date().toISOString()
   });
