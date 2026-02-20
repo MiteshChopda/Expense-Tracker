@@ -1,6 +1,8 @@
 services:
   mongo:
     image: "mongo:latest"
+    networks:
+      - app-net
     ports:
       - "27017:27017"
     volumes:
@@ -10,6 +12,8 @@ services:
     build: ./backend
     ports: 
       - "3001:3001"
+    networks:
+      - app-net
     environment:
       - MONGODB_URI=mongodb://mongo:27017/expense-tracker
     depends_on:
@@ -19,8 +23,14 @@ services:
     build: ./frontend
     ports:
       - "3000:3000"
+    networks:
+      - app-net
     depends_on:
       - backend
 
 volumes:
   mongo-data:
+
+networks:
+  app-net:
+    driver: bridge

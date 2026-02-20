@@ -12,4 +12,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["pnpm","run","dev","--","--host"]
+CMD ["pnpm","run","dev","--host"]
