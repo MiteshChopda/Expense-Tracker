@@ -1,181 +1,112 @@
-# 💰 Personal Finance & Expense Tracker App
 
-A modern, full-stack expense tracking application built with React and Node.js.
+# 💰 Expense Tracker
 
-## Features
+A full-stack personal finance application designed to help you track spending, set monthly budgets, and visualize your financial health with interactive charts and PDF reports.
 
-- ✅ **Daily Expense Tracking** - Add, edit, and delete expenses with categories
-- 📊 **Graphs & Charts** - Visualize expenses with interactive charts (Line, Doughnut, Bar)
-- 📈 **Monthly Reports** - Comprehensive monthly expense reports
-- 💵 **Budget Planning** - Set budgets by category and track spending vs budget
-- 📄 **PDF Export** - Export monthly reports to PDF
+---
 
-## Tech Stack
+## ✨ Features
 
-### Frontend
-- React 18
-- Vite
-- React Router
-- Chart.js / React-Chartjs-2
-- jsPDF / jsPDF-AutoTable
-- Tailwind CSS
-- Axios
-- date-fns
+* **Interactive Dashboard:** Real-time visualization of monthly trends and category-wise spending.
+* **Expense Management:** Full CRUD operations for daily expenses with future-date validation.
+* **Budget Planning:** Set monthly limits for specific categories and track progress via visual progress bars.
+* **Monthly Reports:** Generate detailed summaries and export them as **PDF documents**.
+* **Dark Mode UI:** Sleek, modern interface built with Tailwind CSS.
+* **Responsive Design:** Optimized for both desktop and mobile viewing.
 
-### Backend
-- Node.js
-- Express
-- MongoDB (Mongoose)
-- CORS
+---
 
-## Installation
+## 🛠️ Tech Stack
 
-1. **Install MongoDB:**
-   - For local development, install MongoDB Community Edition from [mongodb.com](https://www.mongodb.com/try/download/community)
-   - Or use MongoDB Atlas (cloud) - create a free cluster at [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas)
+**Frontend**
 
-2. **Configure MongoDB connection:**
-   ```bash
-   cd backend
-   cp .env.example .env
-   ```
-   
-   Edit `.env` and set your MongoDB connection string:
-   - Local: `MONGODB_URI=mongodb://localhost:27017/expense-tracker`
-   - Atlas: `MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/expense-tracker`
+* **Framework:** React 18 (Vite)
+* **Styling:** Tailwind CSS
+* **Charts:** Chart.js & React-Chartjs-2
+* **Networking:** Axios
+* **Utilities:** Date-fns, jsPDF
 
-3. **Install all dependencies:**
-   ```bash
-   npm run install-all
-   ```
+**Backend**
 
-4. **Start MongoDB (if using local):**
-   ```bash
-   # On Linux/Mac
-   sudo systemctl start mongod
-   # Or
-   mongod
-   
-   # On Windows
-   # MongoDB should start automatically as a service
-   ```
+* **Runtime:** Node.js
+* **Framework:** Express
+* **Database:** MongoDB (Mongoose)
+* **Tooling:** Concurrently (to run both servers)
 
-5. **Start the development servers:**
-   
-   **Option 1: Use the startup script (recommended)**
-   ```bash
-   ./start.sh
-   ```
-   
-   **Option 2: Manual start**
-   ```bash
-   npm run dev
-   ```
+---
 
-   This will start:
-   - Backend server on `http://localhost:3001`
-   - Frontend dev server on `http://localhost:3000`
+## 🚀 Getting Started
 
-## Troubleshooting
+### 1. Prerequisites
 
-### MongoDB Connection Issues
+* [Node.js](https://nodejs.org/) installed.
+* [pnpm](https://pnpm.io/installation) (recommended) or npm/yarn.
+* A running **MongoDB** instance (local or Atlas).
 
-1. **MongoDB not running:**
-   ```bash
-   # Check if MongoDB is running
-   sudo systemctl status mongod
-   
-   # Start MongoDB
-   sudo systemctl start mongod
-   ```
+### 2. Environment Setup
 
-2. **Connection refused error:**
-   - Verify MongoDB is running on port 27017
-   - Check your `.env` file has the correct `MONGODB_URI`
-   - For MongoDB Atlas, ensure your IP is whitelisted
+Create a `.env` file in the `backend` directory:
 
-3. **Check server health:**
-   ```bash
-   curl http://localhost:3001/api/health
-   ```
-
-### Common Issues
-
-- **Port already in use:** Change `PORT` in `backend/.env`
-- **CORS errors:** Ensure backend is running on port 3001
-- **Module not found:** Run `npm run install-all` again
-
-## Project Structure
+```env
+MONGODB_URI=mongodb://localhost:27017/expense-tracker
+PORT=3001
 
 ```
-project/
-├── backend/
-│   ├── server.js          # Express API server
-│   ├── config/
-│   │   └── database.js    # MongoDB connection
-│   ├── models/
-│   │   ├── Expense.js     # Expense Mongoose model
-│   │   └── Budget.js      # Budget Mongoose model
-│   ├── .env               # Environment variables (MongoDB URI)
-│   └── package.json
-├── frontend/
+
+### 3. Installation & Launch
+
+The easiest way to start the project is using the included shell script:
+
+```bash
+# Make the script executable
+chmod +x start.sh
+
+# Run the app
+./start.sh
+
+```
+
+**Manual Installation:**
+If you prefer running commands manually:
+
+```bash
+# Install all dependencies
+pnpm run install-all
+
+# Start both frontend and backend
+pnpm run dev
+
+```
+
+---
+
+## 📁 Project Structure
+
+```text
+├── backend/           # Express server & Mongoose models
+│   ├── config/        # Database connection
+│   ├── models/        # MongoDB schemas (Expense, Budget)
+│   └── server.js      # API routes & middleware
+├── frontend/          # React application
 │   ├── src/
-│   │   ├── components/    # React components
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── Expenses.jsx
-│   │   │   ├── Budgets.jsx
-│   │   │   └── Reports.jsx
-│   │   ├── services/
-│   │   │   └── api.js     # API service layer
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── index.css
-│   ├── index.html
-│   ├── package.json
-│   └── vite.config.js
-└── package.json
+│   │   ├── components/# UI Pages (Dashboard, Expenses, etc.)
+│   │   ├── services/  # Axios API configurations
+│   │   └── App.jsx    # Routing logic
+│   └── vite.config.js # Proxy settings for API
+└── start.sh           # Automation script
+
 ```
 
-## API Endpoints
+---
 
-### Expenses
-- `GET /api/expenses` - Get all expenses (optional: ?month=MM&year=YYYY)
-- `GET /api/expenses/:id` - Get expense by ID
-- `POST /api/expenses` - Create new expense
-- `PUT /api/expenses/:id` - Update expense
-- `DELETE /api/expenses/:id` - Delete expense
-- `GET /api/expenses/summary/category` - Get expenses by category
-- `GET /api/expenses/summary/monthly` - Get monthly totals
+## 🚦 API Endpoints
 
-### Budgets
-- `GET /api/budgets` - Get all budgets (optional: ?month=MM&year=YYYY)
-- `POST /api/budgets` - Create or update budget
-- `DELETE /api/budgets/:id` - Delete budget
-- `GET /api/budgets/comparison` - Get budget vs actual comparison
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| **GET** | `/api/expenses` | Get all expenses (supports month/year query) |
+| **POST** | `/api/expenses` | Create a new expense |
+| **GET** | `/api/budgets/comparison` | Get budget vs. actual spending |
+| **POST** | `/api/budgets` | Set or update a category budget |
+| **GET** | `/api/reports/monthly` | Get full monthly summary |
 
-### Reports
-- `GET /api/reports/monthly` - Get monthly report (requires ?month=MM&year=YYYY)
-
-## Usage
-
-1. **Dashboard** - View overview with charts and recent expenses
-2. **Expenses** - Add and manage your daily expenses
-3. **Budgets** - Set monthly budgets by category and track progress
-4. **Reports** - View detailed monthly reports and export to PDF
-
-## Categories
-
-Default expense categories:
-- Food & Dining
-- Transportation
-- Shopping
-- Bills & Utilities
-- Entertainment
-- Healthcare
-- Education
-- Travel
-- Other
-
-## License
-
-MIT
+---
